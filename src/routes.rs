@@ -12,7 +12,13 @@ pub fn dive_routes(
         .or(delete_dive(db.clone()))
         .or(create_dive(db.clone()))
         .or(dives_list(db.clone()))
+        .or(get_health())
 }
+
+/*
+pub fn health_routes() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+    get_health()
+} */
 
 fn with_db(db: Db) -> impl Filter<Extract = (Db,), Error = Infallible> + Clone {
     warp::any().map(move || db.clone())
@@ -57,4 +63,9 @@ fn delete_dive(db: Db) -> impl Filter<Extract = impl warp::Reply, Error = warp::
         .and(warp::delete())
         .and(with_db(db))
         .and_then(handlers::delete_dive)
+}
+
+fn get_health() -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+    warp::path("health")
+        .and_then(handlers::get_health)
 }

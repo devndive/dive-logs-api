@@ -73,3 +73,7 @@ pub async fn delete_dive(guid: String, db: Db) -> Result<impl warp::Reply, Infal
         Ok(StatusCode::NOT_FOUND)
     }
 }
+
+pub async fn get_health() -> Result<impl warp::Reply, Infallible> {
+    Ok(StatusCode::OK)
+}
